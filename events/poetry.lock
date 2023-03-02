@@ -90,6 +90,25 @@ files = [
 ]
 
 [[package]]
+name = "pyevents"
+version = "0.1.0"
+description = "Python package for developing event-engine plugins in Python."
+category = "main"
+optional = false
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+pyzmq = "^25.0.0"
+
+[package.source]
+type = "git"
+url = "https://github.com/tapis-project/event-engine"
+reference = "HEAD"
+resolved_reference = "0575ca11719bbcb418f924eee49327b5f14ab8c5"
+subdirectory = "pyevents"
+[[package]]
 name = "pyzmq"
 version = "25.0.0"
 description = "Python bindings for 0MQ"
@@ -182,4 +201,4 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "562af7bbbc4a697ba07140e50caa946f00d0219b179049b5945db5df5644d946"
+content-hash = "a4a39921f6b9c6f98f09c9e587787912d124577e60ec0b977603ae869c13846a"
