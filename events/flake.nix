@@ -21,16 +21,7 @@
         packages = {
           myapp = mkPoetryApplication { 
             projectDir = ./.; 
-            # overrides = poetry2nix.defaultPoetryOverrides.extend
-            #   (self: super: {
-            #     # opencv-contrib-python-headless = super.opencv-contrib-python-headless.overridePythonAttrs
-            #     znq = super.zmq.overridePythonAttrs
-            #     (
-            #       old: {
-            #         buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
-            #       }
-            #     );
-            #   });
+            preferWheels = true;
           };
           myenv = mkPoetryEnv { projectDir = ./.; };
           default = self.packages.${system}.myapp;

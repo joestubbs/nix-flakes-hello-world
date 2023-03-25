@@ -1,6 +1,8 @@
 # Python artifacts
 /*.egg-info/
 /__pycache__/
+model/zmqtest/__pycache__/
+
 
 # Nix artifacts
 result

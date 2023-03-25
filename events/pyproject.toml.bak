@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "zmqtest"
+version = "0.1.0"
+description = ""
+authors = ["Joe Stubbs <joestubbs5@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyzmq = "^25.0.0"
+pyevents = { git = "https://github.com/tapis-project/event-engine", subdirectory = "pyevents" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+zmqtest = 'zmqtest.app:main'
