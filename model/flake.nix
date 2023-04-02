@@ -70,44 +70,30 @@
            cp ${mdPtModel} $out/md_v5a.0.0.pt
           '';
         };
+        newPython = myPython.withPackages (
+            ps: [ myApp ai4eutils yolov5 cameraTrapsMD ]
+        );
         myApp = mkPoetryApplication { 
             python = myPython;
             projectDir = ./.; 
             preferWheels = true;
           };
-        newPython = myPython.withPackages (
-            ps: [ myApp ai4eutils yolov5 cameraTrapsMD ]
-        );
-        # newPython2 = myPython.pkgs.buildPythonApplication {
-        #   name = "newPython2";
-        #   propagatedBuildInputs = [ myApp ai4eutils yolov5 cameraTrapsMD ];
-        #   pythonPath = [ "${cameraTrapsMD}/lib/python3.8/site-packages/camera_traps_MD/" ];
-          
-        # };
-        newPython3 = pkgs.stdenv.mkDerivation {
-            name = "newPython3";
-            buildInputs = [ newPython pkgs.makeWrapper ];
+        newMyApp = pkgs.stdenv.mkDerivation {
+            name = "newMyApp";
+            buildInputs = [ myApp pkgs.makeWrapper ptModelDir ];
             src = self;
             installPhase = ''
-              makeWrapper ${newPython}/bin/python $out/bin/python --set PYTHONPATH ${cameraTrapsMD}/lib/python3.8/site-packages/camera_traps_MD/:${ai4eutils}/lib/python3.8/site-packages/ai4eutils:${yolov5}/lib/python3.8/site-packages/yolov5
-            '';
-        };
-        finalBinary = pkgs.writeShellApplication {
-            name = "image_scoring_plugin";
-            runtimeInputs = [ newPython3 ptModelDir myApp ];
-            text = ''
-              cd ${ptModelDir}; ${myApp}/bin/zmqtest
+              makeWrapper ${myApp}/bin/zmqtest $out/bin/zmqtest \
+              --chdir ${ptModelDir} \
+              --set PYTHONPATH \
+                "${cameraTrapsMD}/lib/python3.8/site-packages/camera_traps_MD:${cameraTrapsMD}/lib/python3.8/site-packages:${ai4eutils}/lib/python3.8/site-packages/ai4eutils:${yolov5}/lib/python3.8/site-packages/yolov5"
             '';
         };
       in
       rec {
         packages = {
-          py = finalBinary;
+          py = newMyApp;
           default = packages.py;
-          ai4eutilsPkg = ai4eutils;
-          myAppPkg = myApp;
-          modelPkg = mdPtModel;
-          pythonPkg = newPython3;
         };
 
         devShells.default = shell {
